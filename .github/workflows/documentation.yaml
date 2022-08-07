@@ -12,9 +12,6 @@ jobs:
       - uses: actions/setup-python@v2
       - uses: syphar/restore-virtualenv@v1
         id: pdpy-virtualenv
-      - name: Install dependencies
-        run: |
-          pip install sphinx sphinx_rtd_theme
       - name: Commit documentation changes
         run: |
           git clone https://github.com/pdpy-org/pdpy.git --branch gh-pages --single-branch gh-pages
