@@ -21,7 +21,6 @@ jobs:
           cd pdpy
           make local
           make doc
-          mkdir ../
           cp -r docs/_build/html/* ../
           cd ../
           rm -rf pdpy/
