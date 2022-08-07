@@ -14,10 +14,11 @@ jobs:
         id: pdpy-virtualenv
       - name: Commit documentation changes
         run: |
-          git clone https://github.com/pdpy-org/pdpy.git --single-branch gh-pages
+          git clone https://github.com/pdpy-org/pdpy.git
           make local
           make docs
-          cp -r docs/* gh-pages/
+          mkdir gh-pages
+          cp -r docs/_build/html/* gh-pages
           cd gh-pages
           touch .nojekyll
           git config --local user.email "fdch@nyu.edu"
