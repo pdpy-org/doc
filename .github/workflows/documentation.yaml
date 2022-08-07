@@ -1,39 +1,31 @@
-name: Docs
-
-on: [push, pull_request, workflow_dispatch]
-
+name: Auto-Update Docs
+on: [push]
 jobs:
-  docs:
-
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-      - uses: syphar/restore-virtualenv@v1
-        id: pdpy-virtualenv
-      - name: Install Deps
+      - name: Setting up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.7
+      - name: Install Dependencies
         run: |
           pip install build sphinx sphinx_rtd_theme
+      - name: Clone the main repo
+        run: |
+          git clone https://github.com/pdpy-org/pdpy.git
+      - name: Install local pdpy and make the docs
+        run: |
+          cd pdpy && make local && make doc
+      - name: Copy documentation changes and remove pdpy
+        run: |
+          cp -r pdpy/docs/_build/html/* .
+          rm -rf pdpy/
       - name: Commit documentation changes
         run: |
-          git pull
-          git clone https://github.com/pdpy-org/pdpy.git
-          cd pdpy
-          make local
-          make doc
-          cp -r docs/_build/html/* ../
-          cd ../
-          rm -rf pdpy/
-          touch .nojekyll
-          git config --local user.email "fdch@nyu.edu"
-          git config --local user.name "Fede Camara Halac"
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git add .
-          git commit -m "Update documentation" -a || true
-          # The above command will fail if no changes were present, so we ignore
-          # that.
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          branch: gh-pages
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git commit -m "Auto-Update documentation"
+          git push
