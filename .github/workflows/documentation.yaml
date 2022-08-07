@@ -17,6 +17,7 @@ jobs:
           pip install build sphinx sphinx_rtd_theme
       - name: Commit documentation changes
         run: |
+          git pull
           git clone https://github.com/pdpy-org/pdpy.git
           cd pdpy
           make local
