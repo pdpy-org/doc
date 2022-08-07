@@ -3,14 +3,14 @@ name: Docs
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  build:
+  docs:
 
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v3.9
-      - uses: syphar/restore-virtualenv@v1
+        uses: actions/setup-python@v3.9
+        uses: syphar/restore-virtualenv@v1
         id: pdpy-virtualenv
       - name: Install dependencies
         run: |
@@ -29,9 +29,9 @@ jobs:
           git commit -m "Update documentation" -a || true
           # The above command will fail if no changes were present, so we ignore
           # that.
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        branch: gh-pages
-        directory: gh-pages
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: gh-pages
+          directory: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
