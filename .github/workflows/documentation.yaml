@@ -14,7 +14,7 @@ jobs:
         id: pdpy-virtualenv
       - name: Install Deps
         run: |
-          pip install build
+          pip install build sphinx sphinx_rtd_theme
       - name: Commit documentation changes
         run: |
           git clone https://github.com/pdpy-org/pdpy.git
