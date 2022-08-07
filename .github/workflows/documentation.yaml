@@ -12,6 +12,9 @@ jobs:
       - uses: actions/setup-python@v2
       - uses: syphar/restore-virtualenv@v1
         id: pdpy-virtualenv
+      - name: Install Deps
+        run: |
+          pip install build
       - name: Commit documentation changes
         run: |
           git clone https://github.com/pdpy-org/pdpy.git
