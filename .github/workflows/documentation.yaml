@@ -14,7 +14,7 @@ jobs:
         id: pdpy-virtualenv
       - name: Commit documentation changes
         run: |
-          git clone https://github.com/pdpy-org/pdpy.git --branch gh-pages --single-branch gh-pages
+          git clone https://github.com/pdpy-org/pdpy.git --single-branch gh-pages
           make local
           make docs
           cp -r docs/* gh-pages/
