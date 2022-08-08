@@ -1,10 +1,33 @@
 name: Auto-Update Docs
-on: [push]
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
-  build:
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Setting up python
         uses: actions/setup-python@v2
         with:
@@ -14,8 +37,6 @@ jobs:
           pip install build sphinx sphinx_rtd_theme
       - name: Pull this repo and clone the main repo
         run: |
-          git fetch --all
-          git pull
           git clone https://github.com/pdpy-org/pdpy.git
       - name: Install local pdpy and make the docs
         run: |
@@ -24,10 +45,14 @@ jobs:
         run: |
           cp -r pdpy/docs/_build/html/* .
           rm -rf pdpy/
-      - name: Commit documentation changes
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git commit -m "Auto-Update documentation"
-          git push
+      - name: Setup Pages
+        uses: actions/configure-pages@v1
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload entire repository
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@main
+      
