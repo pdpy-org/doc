@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pdpy.classes.patch &mdash; pdpy  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
+    <link rel="canonical" href="https://pdpy-org.github.com/doc/_modules/pdpy/classes/patch.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+            <a href="../../../index.html">
+            <img src="../../../_static/pdpy-logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../classes.html">Classes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/holamundo.html">Hola Mundo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/simpleaudio.html">Simple Audio</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pdpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pdpy.classes.patch</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pdpy.classes.patch</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># **************************************************************************** #</span>
+<span class="c1"># This file is part of the pdpy project</span>
+<span class="c1"># Copyright (C) 2022 Fede Camara Halac</span>
+<span class="c1"># **************************************************************************** #</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Patch</span>
+<span class="sd">=====</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.pdpy</span> <span class="kn">import</span> <span class="n">PdPy</span>
+<span class="kn">import</span> <span class="nn">pylibpd</span>
+<span class="kn">from</span> <span class="nn">pyaudio</span> <span class="kn">import</span> <span class="n">PyAudio</span><span class="p">,</span> <span class="n">paInt16</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;Patch&#39;</span> <span class="p">]</span>
+
+<div class="viewcode-block" id="Patch"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.patch.Patch">[docs]</a><span class="k">class</span> <span class="nc">Patch</span><span class="p">(</span><span class="n">PdPy</span><span class="p">,</span> <span class="n">pylibpd</span><span class="o">.</span><span class="n">PdManager</span><span class="p">,</span> <span class="n">PyAudio</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot; Patch interface to use pdpy and libpd</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  </span>
+<span class="sd">  name : :class:`str` or ``None``</span>
+<span class="sd">    Name for the patch</span>
+<span class="sd">  </span>
+<span class="sd">  inch : :class:`int`</span>
+<span class="sd">    Number of input channels (defaults: 2)</span>
+<span class="sd">  </span>
+<span class="sd">  outch : :class:`int`</span>
+<span class="sd">    Number of output channels (defaults: 2)</span>
+<span class="sd">  </span>
+<span class="sd">  sr : :class:`int`</span>
+<span class="sd">    Sample rate (defaults: 44100)</span>
+<span class="sd">  </span>
+<span class="sd">  **kwargs:</span>
+<span class="sd">    Other keyword arguments are passed to the :class:`pdpy.classes.pdpy.PdPy` base class</span>
+
+
+<span class="sd">  Example</span>
+<span class="sd">  -------</span>
+
+<span class="sd">  First, we need to do our import::</span>
+
+<span class="sd">    &gt;&gt;&gt; import pdpy</span>
+
+<span class="sd">  Now, make a patch with a ``name`` and set it to be the root patch.</span>
+<span class="sd">    &gt;&gt;&gt; patch = pdpy.Patch(name=&#39;test&#39;, root=True)</span>
+<span class="sd">  </span>
+<span class="sd">  Create some objects: an oscillator</span>
+<span class="sd">    &gt;&gt;&gt; osc = pdpy.Obj(&#39;osc~&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; osc.addargs(440)</span>
+<span class="sd">    &lt;pdpy.classes.obj.Obj object at 0x106ac7850&gt;</span>
+<span class="sd">  </span>
+<span class="sd">  Now, let&#39;s make a multiplier and a dac objects</span>
+<span class="sd">    &gt;&gt;&gt; mul = pdpy.Obj(&#39;*~&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; mul.addargs(0.1)</span>
+<span class="sd">    &lt;pdpy.classes.obj.Obj object at 0x106729850&gt;</span>
+<span class="sd">    &gt;&gt;&gt; dac = pdpy.Obj(&#39;dac~&#39;)</span>
+
+<span class="sd">  Create the objects and connect them</span>
+<span class="sd">    &gt;&gt;&gt; patch.create(osc, mul, dac)</span>
+<span class="sd">    &lt;pdpy.classes.patch.Patch object at 0x106755640&gt;</span>
+<span class="sd">    &gt;&gt;&gt; patch.connect(osc, mul)</span>
+<span class="sd">    &gt;&gt;&gt; patch.connect(mul, [dac, 0, 1])</span>
+<span class="sd">  </span>
+<span class="sd">  Write the patch</span>
+<span class="sd">    &gt;&gt;&gt; patch.write()</span>
+<span class="sd">    Initialized Arrange graph placing algorithm.</span>
+<span class="sd">  </span>
+<span class="sd">  Start the audio and perform</span>
+<span class="sd">    &gt;&gt;&gt; patch.start_audio()</span>
+<span class="sd">    &lt;pyaudio.Stream object at 0x106ac74f0&gt;</span>
+<span class="sd">    &gt;&gt;&gt; patch.perform()</span>
+
+<span class="sd">  You should now hear a sinewave at 440 Hz.</span>
+
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inch</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">outch</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Constructor &quot;&quot;&quot;</span>
+    
+    <span class="n">PdPy</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">__inch__</span> <span class="o">=</span> <span class="n">inch</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__outch__</span> <span class="o">=</span> <span class="n">outch</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__sr__</span> <span class="o">=</span> <span class="n">sr</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__bs__</span> <span class="o">=</span> <span class="n">pylibpd</span><span class="o">.</span><span class="n">libpd_blocksize</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__tpb__</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">pylibpd</span><span class="o">.</span><span class="n">PdManager</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__inch__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__outch__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sr__</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    
+    <span class="n">PyAudio</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">start_audio</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">self</span>
+  
+<div class="viewcode-block" id="Patch.start_audio"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.patch.Patch.start_audio">[docs]</a>  <span class="k">def</span> <span class="nf">start_audio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Start the pyaudio stream &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__stream__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span>
+              <span class="nb">format</span> <span class="o">=</span> <span class="n">paInt16</span><span class="p">,</span>
+              <span class="n">channels</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__inch__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__outch__</span><span class="p">),</span>
+              <span class="n">rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sr__</span><span class="p">,</span>
+              <span class="nb">input</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+              <span class="n">output</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+              <span class="n">frames_per_buffer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bs__</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tpb__</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stream__</span></div>
+  
+<div class="viewcode-block" id="Patch.perform"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.patch.Patch.perform">[docs]</a>  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Open the patch and begin the audio stream loop &quot;&quot;&quot;</span>
+    <span class="n">pylibpd</span><span class="o">.</span><span class="n">libpd_open_patch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">patchname</span> <span class="o">+</span> <span class="s1">&#39;.pd&#39;</span><span class="p">)</span>
+  
+    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+      <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stream__</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__bs__</span><span class="p">,</span> <span class="n">exception_on_overflow</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+      <span class="n">outp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">__stream__</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">outp</span><span class="p">))</span></div>
+
+
+  <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx_type</span><span class="p">,</span> <span class="n">ctx_value</span><span class="p">,</span> <span class="n">ctx_traceback</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="n">ctx_type</span><span class="p">,</span> <span class="n">ctx_value</span><span class="p">,</span> <span class="n">ctx_traceback</span><span class="p">)</span>
+  
+    <span class="bp">self</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__stream__</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+
+    <span class="n">pylibpd</span><span class="o">.</span><span class="n">libpd_release</span><span class="p">()</span></div>
+  
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Fede Camara Halac.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

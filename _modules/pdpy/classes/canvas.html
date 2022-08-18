@@ -131,7 +131,7 @@
 <span class="sd">  `__pdpy__` (`str`) PdPy className (`self.__class__.__name__`)</span>
 <span class="sd">  </span>
 <span class="sd">  &quot;&quot;&quot;</span>
-  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
     <span class="n">CanvasBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_idx</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">Base</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pdtype</span><span class="o">=</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="s1">&#39;canvas&#39;</span><span class="p">)</span>
@@ -140,14 +140,25 @@
     <span class="k">if</span> <span class="n">json</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
       <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__populate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="mi">12</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">vis</span> <span class="o">=</span> <span class="mi">0</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+      
+      <span class="k">def</span> <span class="nf">_set</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="n">default</span><span class="p">)</span>
+      
+      <span class="n">_set</span><span class="p">(</span><span class="s1">&#39;screen&#39;</span><span class="p">,</span>
+        <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">22</span><span class="p">))</span>
+      <span class="n">_set</span><span class="p">(</span><span class="s1">&#39;dimension&#39;</span><span class="p">,</span>
+        <span class="n">Size</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mi">300</span><span class="p">))</span>
+      <span class="n">_set</span><span class="p">(</span><span class="s1">&#39;font&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+      <span class="n">_set</span><span class="p">(</span><span class="s1">&#39;vis&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="n">_set</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__d__</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sane_name__</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+      <span class="n">_set</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
     
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;isroot&#39;</span><span class="p">):</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">isroot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pdbool__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">isroot</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;pd &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+      
     
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;font&#39;</span><span class="p">):</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="p">)</span>
@@ -157,47 +168,6 @@
       <span class="bp">self</span><span class="o">.</span><span class="n">__box__</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span> <span class="o">*</span> <span class="mf">1.25</span><span class="p">),</span> <span class="n">h</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">__margin__</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Canvas.grow"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.canvas.Canvas.grow">[docs]</a>  <span class="k">def</span> <span class="nf">grow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Increments the canvas object index by 1</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__obj_idx__</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obj_idx__</span></div>
-  
-<div class="viewcode-block" id="Canvas.add"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.canvas.Canvas.add">[docs]</a>  <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Add (append) a Node to this canvas `nodes`</span>
-
-<span class="sd">    Description:</span>
-<span class="sd">    ------------</span>
-<span class="sd">    This method creates and/or appends a &#39;node&#39; to an internal array `nodes`.</span>
-<span class="sd">    Each node is a Pure Data object that is neither a comment nor a connection</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">    --------</span>
-<span class="sd">    The position (index) of the most recently added node</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;nodes&#39;</span><span class="p">):</span> 
-      <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span></div>
-
-<div class="viewcode-block" id="Canvas.edge"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.canvas.Canvas.edge">[docs]</a>  <span class="k">def</span> <span class="nf">edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Append a pure data connection (edge)</span>
-
-<span class="sd">    Description:</span>
-<span class="sd">    ------------</span>
-<span class="sd">    This method creates and/or appends a pure data connection as an `Edge`.</span>
-<span class="sd">    See `Edge` to see how connections are handled.</span>
-
-<span class="sd">    Return:</span>
-<span class="sd">    -------</span>
-<span class="sd">    None</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;edges&#39;</span><span class="p">):</span> 
-      <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__parent__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edge</span><span class="o">.</span><span class="n">connect</span><span class="p">())</span></div>
-    <span class="c1"># log(1,&quot;Edge&quot;,edge.__dict__)</span>
 
 <div class="viewcode-block" id="Canvas.comment"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.canvas.Canvas.comment">[docs]</a>  <span class="k">def</span> <span class="nf">comment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Append a pure data comment</span>
@@ -214,51 +184,50 @@
       <span class="bp">self</span><span class="o">.</span><span class="n">comments</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">comment</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Canvas.update_cursor"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.canvas.Canvas.update_cursor">[docs]</a>  <span class="k">def</span> <span class="nf">update_cursor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="Canvas.update_cursor"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.canvas.Canvas.update_cursor">[docs]</a>  <span class="k">def</span> <span class="nf">update_cursor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w_step</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">h_step</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Fill objects from top to bottom until we reach bottom</span>
 <span class="sd">    (used to be get_position)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Update Cursor:&quot;</span><span class="p">,</span> <span class="n">w_step</span><span class="p">,</span> <span class="n">h_step</span><span class="p">)</span>
     <span class="n">mod_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cursor__</span><span class="o">.</span><span class="n">x</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">width</span>
     <span class="n">mod_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cursor__</span><span class="o">.</span><span class="n">y</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">height</span>
 
     <span class="c1"># def _print():</span>
     <span class="c1">#   print(self.__cursor__.x, self.__cursor__.y, mod_x, mod_y)</span>
 
-    <span class="k">if</span> <span class="n">mod_x</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">mod_y</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;out of bounds --------------------&quot;</span><span class="p">)</span>
-    <span class="c1"># if cursor is out of bounds, grow downwards...</span>
-      <span class="c1"># reset x, </span>
-      <span class="c1"># resize the canvas to be twice as tall as before</span>
-      <span class="c1"># and make y be the bottom most position</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">__cursor__</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cursor_init__</span><span class="o">.</span><span class="n">x</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">__cursor__</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">height</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">__cursor__</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pad__</span><span class="o">.</span><span class="n">height</span>
-      <span class="k">return</span>
+    <span class="c1"># if mod_x &gt; 1 and mod_y &gt; 1:</span>
+    <span class="c1">#   print(&quot;out of bounds --------------------&quot;)</span>
+    <span class="c1"># # if cursor is out of bounds, grow downwards...</span>
+    <span class="c1">#   # reset x, </span>
+    <span class="c1">#   # resize the canvas to be twice as tall as before</span>
+    <span class="c1">#   # and make y be the bottom most position</span>
+    <span class="c1">#   self.__cursor__.x = self.__cursor_init__.x</span>
+    <span class="c1">#   self.__cursor__.y += self.dimension.height</span>
+    <span class="c1">#   self.__cursor__.y += self.__pad__.height</span>
+    <span class="c1">#   return</span>
 
-    <span class="k">if</span> <span class="n">mod_x</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">mod_y</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;surpassed y&quot;</span><span class="p">,</span> <span class="n">mod_y</span><span class="p">)</span>
-      <span class="c1"># reset y and increment x position</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">set_height</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">__cursor__</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cursor_init__</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">height</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">__cursor__</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">width</span>
-      <span class="k">return</span>
+    <span class="c1"># if mod_x &lt; 1 and mod_y &gt; 1:</span>
+    <span class="c1">#   print(&quot;surpassed y&quot;, mod_y)</span>
+    <span class="c1">#   # reset y and increment x position</span>
+    <span class="c1">#   self.dimension.set_height(self.dimension.height * 2)</span>
+    <span class="c1">#   self.__cursor__.y = self.__cursor_init__.y + h_step</span>
+    <span class="c1">#   self.__cursor__.x += w_step</span>
+    <span class="c1">#   return</span>
 
-    <span class="k">if</span> <span class="n">mod_x</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">mod_y</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;surpassed x&quot;</span><span class="p">)</span>
-      <span class="c1"># reset x and increment y position</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">__cursor__</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">mod_y</span><span class="p">)</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">__cursor__</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cursor_init__</span><span class="o">.</span><span class="n">x</span>
-      <span class="k">return</span> 
+    <span class="c1"># if mod_x &gt; 1 and mod_y &lt; 1:</span>
+    <span class="c1">#   print(&quot;surpassed x&quot;)</span>
+    <span class="c1">#   # reset x and increment y position</span>
+    <span class="c1">#   self.dimension.set_width(self.dimension.width * 2)</span>
+    <span class="c1">#   self.__cursor__.y += self.dimension.height * (1+mod_y)</span>
+    <span class="c1">#   self.__cursor__.x = self.__cursor_init__.x</span>
+    <span class="c1">#   return </span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">__cursor__</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">height</span></div>
+    <span class="c1"># grow downwards</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__cursor__</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">h_step</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__cursor__</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">w_step</span></div>
 
 <div class="viewcode-block" id="Canvas.get_char_dim"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.canvas.Canvas.get_char_dim">[docs]</a>  <span class="k">def</span> <span class="nf">get_char_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span> <span class="o">*</span> <span class="mf">1.55</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Canvas.addpos"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.canvas.Canvas.addpos">[docs]</a>  <span class="k">def</span> <span class="nf">addpos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;position&#39;</span><span class="p">,</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Canvas.get"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.canvas.Canvas.get">[docs]</a>  <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;nodes&#39;</span><span class="p">):</span>
@@ -273,9 +242,18 @@
 
     <span class="c1"># the canvas line</span>
     <span class="n">s</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__pd__</span><span class="p">()</span>
+
+    <span class="c1"># print(&quot;Screen:&quot;,self.screen.__pd__())</span>
+    <span class="c1"># print(&quot;Dimension:&quot;,self.dimension.__pd__())</span>
+    <span class="c1"># print(&quot;Name:&quot;,self.name)</span>
+    <span class="c1"># print(&quot;Font:&quot;,self.font)</span>
+    <span class="c1"># print(&quot;Vis:&quot;,self.vis)</span>
+    <span class="c1"># print(&quot;End:&quot;,repr(self.__end__))</span>
+
     <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">__pd__</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">__pd__</span><span class="p">()</span>
     
     <span class="n">isroot</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;isroot&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">isgraph</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;isgraph&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">isroot</span><span class="p">:</span>
       <span class="c1"># root canvas only reports font</span>
@@ -287,7 +265,7 @@
     <span class="c1"># end the line so we can continue appending to `s`</span>
     <span class="n">s</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__end__</span>
     
-    <span class="n">s</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__render__</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">isroot</span><span class="o">=</span><span class="n">isroot</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__render__</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">isroot</span><span class="o">=</span><span class="n">isroot</span><span class="p">,</span> <span class="n">isgraph</span><span class="o">=</span><span class="n">isgraph</span><span class="p">)</span>
     
     <span class="c1"># the border, only if not root</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;border&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">isroot</span><span class="p">):</span>

@@ -109,7 +109,7 @@
 <span class="kn">from</span> <span class="nn">.obj</span> <span class="kn">import</span> <span class="n">Obj</span>
 <span class="kn">from</span> <span class="nn">.array</span> <span class="kn">import</span> <span class="n">Array</span>
 <span class="kn">from</span> <span class="nn">.gui</span> <span class="kn">import</span> <span class="n">Gui</span>
-<span class="kn">from</span> <span class="nn">.message</span> <span class="kn">import</span> <span class="n">Msg</span>
+<span class="kn">from</span> <span class="nn">.msg</span> <span class="kn">import</span> <span class="n">Msg</span>
 <span class="kn">from</span> <span class="nn">.dependencies</span> <span class="kn">import</span> <span class="n">Dependencies</span>
 <span class="kn">from</span> <span class="nn">.comment</span> <span class="kn">import</span> <span class="n">Comment</span>
 <span class="kn">from</span> <span class="nn">.connections</span> <span class="kn">import</span> <span class="n">Edge</span>
@@ -117,7 +117,7 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;PdPy&#39;</span> <span class="p">]</span>
 
-<div class="viewcode-block" id="PdPy"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy">[docs]</a><span class="k">class</span> <span class="nc">PdPy</span><span class="p">(</span><span class="n">CanvasBase</span><span class="p">,</span> <span class="n">Base</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy">[docs]</a><span class="k">class</span> <span class="nc">PdPy</span><span class="p">(</span><span class="n">CanvasBase</span><span class="p">,</span> <span class="n">Base</span><span class="p">):</span>
   
   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -128,12 +128,20 @@
                <span class="n">xml</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                <span class="n">pdpath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Initialize a PdPy object &quot;&quot;&quot;</span>
-
+    
     <span class="bp">self</span><span class="o">.</span><span class="n">patchname</span> <span class="o">=</span> <span class="n">Base</span><span class="o">.</span><span class="n">__sane_name__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">encoding</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__pdpy__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__canvas_idx__</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__depth__</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__max_w__</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__max_h__</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">arrangement</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># set the arrangement function</span>
+    <span class="c1"># The following are used in the arrange function:</span>
+    <span class="c1"># the horizontal step size for increments</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__hstep__</span> <span class="o">=</span> <span class="mf">1.25</span> 
+    <span class="c1"># the vertical step size for increments</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__vstep__</span> <span class="o">=</span> <span class="mi">1</span>
 
     <span class="n">CanvasBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">Base</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">,</span> <span class="n">xml</span><span class="o">=</span><span class="n">xml</span><span class="p">)</span>
@@ -152,9 +160,7 @@
       <span class="c1"># update the parent of all childs</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">__jsontree__</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">pdpath</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">pdpath</span><span class="p">(</span><span class="n">pdpath</span><span class="p">)</span>
-
+    <span class="bp">self</span><span class="o">.</span><span class="n">__set_pd_path__</span><span class="p">(</span><span class="n">pdpath</span><span class="p">)</span>
 
   <span class="k">def</span> <span class="nf">__jsontree__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="c1"># log(0, f&quot;{self.__class__.__name__}.__jsontree__()&quot;)</span>
@@ -163,19 +169,19 @@
       <span class="nb">setattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;__p__&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__addparents__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PdPy.getTemplate"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.getTemplate">[docs]</a>  <span class="k">def</span> <span class="nf">getTemplate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template_name</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.getTemplate"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.getTemplate">[docs]</a>  <span class="k">def</span> <span class="nf">getTemplate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template_name</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;structs&#39;</span><span class="p">)):</span>
       <span class="k">if</span> <span class="n">template_name</span> <span class="o">==</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">idx</span><span class="p">,</span> <span class="n">s</span></div>
   
-<div class="viewcode-block" id="PdPy.addStruct"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.addStruct">[docs]</a>  <span class="k">def</span> <span class="nf">addStruct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pd_lines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xml</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.addStruct"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.addStruct">[docs]</a>  <span class="k">def</span> <span class="nf">addStruct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pd_lines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xml</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;structs&#39;</span><span class="p">):</span> 
       <span class="bp">self</span><span class="o">.</span><span class="n">structs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">struct</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="n">pd_lines</span><span class="o">=</span><span class="n">pd_lines</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">,</span> <span class="n">xml</span><span class="o">=</span><span class="n">xml</span><span class="p">)</span>
     <span class="n">struct</span><span class="o">.</span><span class="n">__parent__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">structs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">struct</span><span class="p">)</span>  </div>
   
-<div class="viewcode-block" id="PdPy.addRoot"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.addRoot">[docs]</a>  <span class="k">def</span> <span class="nf">addRoot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pd_lines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.addRoot"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.addRoot">[docs]</a>  <span class="k">def</span> <span class="nf">addRoot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pd_lines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Add a root canvas object from pure data, json, or an empty canvas </span>
 <span class="sd">    </span>
 <span class="sd">    Description:</span>
@@ -210,7 +216,7 @@
 
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span></div>
   
-<div class="viewcode-block" id="PdPy.addDependencies"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.addDependencies">[docs]</a>  <span class="k">def</span> <span class="nf">addDependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.addDependencies"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.addDependencies">[docs]</a>  <span class="k">def</span> <span class="nf">addDependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; handle embedded declarations</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="s2">&quot;dependencies&quot;</span><span class="p">):</span>
@@ -245,7 +251,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">__depth__</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">__canvas__</span>
 
-<div class="viewcode-block" id="PdPy.addCanvas"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.addCanvas">[docs]</a>  <span class="k">def</span> <span class="nf">addCanvas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pd_lines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.addCanvas"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.addCanvas">[docs]</a>  <span class="k">def</span> <span class="nf">addCanvas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pd_lines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Add a Canvas object from pure data syntax tokens</span>
 <span class="sd">    </span>
 <span class="sd">    Description:</span>
@@ -265,11 +271,15 @@
       <span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
       <span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">()</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">):</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obj_idx__</span><span class="p">)</span>
+    
     <span class="bp">self</span><span class="o">.</span><span class="n">__canvas_idx__</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">__canvas__</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">canvas</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">canvas</span></div>
 
-<div class="viewcode-block" id="PdPy.addObj"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.addObj">[docs]</a>  <span class="k">def</span> <span class="nf">addObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.addObj"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.addObj">[docs]</a>  <span class="k">def</span> <span class="nf">addObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Add a Pd object from pure data syntax tokens</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># log(1,&quot;addOBJ&quot;, argv)</span>
@@ -326,27 +336,27 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">obj</span></div>
   
-<div class="viewcode-block" id="PdPy.addMsg"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.addMsg">[docs]</a>  <span class="k">def</span> <span class="nf">addMsg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.addMsg"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.addMsg">[docs]</a>  <span class="k">def</span> <span class="nf">addMsg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">):</span>
     <span class="c1"># log(1,&quot;msg&quot;, nodes)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__obj_idx__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span><span class="o">.</span><span class="n">grow</span><span class="p">()</span>
     <span class="n">msg</span> <span class="o">=</span> <span class="n">Msg</span><span class="p">(</span><span class="n">pd_lines</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__obj_idx__</span><span class="p">]</span><span class="o">+</span><span class="n">argv</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">msg</span></div>
   
-<div class="viewcode-block" id="PdPy.addComment"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.addComment">[docs]</a>  <span class="k">def</span> <span class="nf">addComment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.addComment"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.addComment">[docs]</a>  <span class="k">def</span> <span class="nf">addComment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span><span class="o">.</span><span class="n">grow</span><span class="p">()</span>
     <span class="c1"># log(1,&quot;COMMENT&quot;,argv)</span>
     <span class="n">comment</span> <span class="o">=</span> <span class="n">Comment</span><span class="p">(</span><span class="n">pd_lines</span><span class="o">=</span><span class="n">argv</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span><span class="o">.</span><span class="n">comment</span><span class="p">(</span><span class="n">comment</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">comment</span></div>
 
-<div class="viewcode-block" id="PdPy.addNativeGui"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.addNativeGui">[docs]</a>  <span class="k">def</span> <span class="nf">addNativeGui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">className</span><span class="p">,</span> <span class="n">argv</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.addNativeGui"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.addNativeGui">[docs]</a>  <span class="k">def</span> <span class="nf">addNativeGui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">className</span><span class="p">,</span> <span class="n">argv</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__obj_idx__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span><span class="o">.</span><span class="n">grow</span><span class="p">()</span>
     <span class="n">obj</span> <span class="o">=</span> <span class="n">Gui</span><span class="p">(</span><span class="n">pd_lines</span><span class="o">=</span><span class="p">[</span> <span class="n">className</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obj_idx__</span> <span class="p">]</span> <span class="o">+</span> <span class="n">argv</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">obj</span></div>
 
-<div class="viewcode-block" id="PdPy.addGraph"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.addGraph">[docs]</a>  <span class="k">def</span> <span class="nf">addGraph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.addGraph"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.addGraph">[docs]</a>  <span class="k">def</span> <span class="nf">addGraph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; The ye-olde array ancestor</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__obj_idx__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span><span class="o">.</span><span class="n">grow</span><span class="p">()</span>
@@ -354,7 +364,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">graph</span></div>
 
-<div class="viewcode-block" id="PdPy.addGOPArray"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.addGOPArray">[docs]</a>  <span class="k">def</span> <span class="nf">addGOPArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.addGOPArray"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.addGOPArray">[docs]</a>  <span class="k">def</span> <span class="nf">addGOPArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">):</span>
     <span class="c1"># log(1,&quot;addGOPArray&quot;, argv)</span>
     <span class="n">arr</span> <span class="o">=</span> <span class="n">GOPArray</span><span class="p">(</span><span class="n">json</span><span class="o">=</span><span class="p">{</span>
       <span class="s1">&#39;name&#39;</span> <span class="p">:</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
@@ -366,20 +376,20 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">arr</span></div>
   
-<div class="viewcode-block" id="PdPy.addScalar"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.addScalar">[docs]</a>  <span class="k">def</span> <span class="nf">addScalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pd_lines</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.addScalar"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.addScalar">[docs]</a>  <span class="k">def</span> <span class="nf">addScalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pd_lines</span><span class="p">):</span>
     <span class="n">scalar</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">struct</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">structs</span><span class="p">,</span> <span class="n">pd_lines</span><span class="o">=</span><span class="n">pd_lines</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">scalar</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">scalar</span></div>
 
-<div class="viewcode-block" id="PdPy.addEdge"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.addEdge">[docs]</a>  <span class="k">def</span> <span class="nf">addEdge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pd_lines</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.addEdge"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.addEdge">[docs]</a>  <span class="k">def</span> <span class="nf">addEdge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pd_lines</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">Edge</span><span class="p">(</span><span class="n">pd_lines</span><span class="o">=</span><span class="n">pd_lines</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="PdPy.addCoords"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.addCoords">[docs]</a>  <span class="k">def</span> <span class="nf">addCoords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.addCoords"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.addCoords">[docs]</a>  <span class="k">def</span> <span class="nf">addCoords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; the coords constructor</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">(),</span> <span class="s2">&quot;coords&quot;</span><span class="p">,</span> <span class="n">Coords</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="PdPy.restore"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.restore">[docs]</a>  <span class="k">def</span> <span class="nf">restore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.restore"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.restore">[docs]</a>  <span class="k">def</span> <span class="nf">restore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Restore constructor</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># restored canvases also have borders</span>
@@ -387,121 +397,51 @@
     <span class="n">last</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">argv</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
       <span class="nb">setattr</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="s1">&#39;position&#39;</span><span class="p">,</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-      <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">(),</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span>
+      <span class="nb">setattr</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__depth__</span> <span class="o">-=</span> <span class="mi">1</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__canvas_idx__</span><span class="p">):</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">__canvas_idx__</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">last</span></div>
 
-<div class="viewcode-block" id="PdPy.create"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.create">[docs]</a>  <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">anything</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Create an object, message, comment, or any other pd object &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">anything</span><span class="p">:</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">__obj_idx__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span><span class="o">.</span><span class="n">grow</span><span class="p">()</span>
-      <span class="n">__last_canvas__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span>
-      <span class="n">__obj_id__</span> <span class="o">=</span> <span class="n">__last_canvas__</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-      <span class="n">a</span><span class="o">.</span><span class="n">__parent__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">__last_canvas__</span><span class="p">)</span>
-      <span class="n">a</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">__obj_id__</span>
-    <span class="k">return</span> <span class="bp">self</span></div>
-
-  <span class="k">def</span> <span class="nf">__add_xy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">canvas</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-      <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">nodes</span><span class="p">]</span>
+<div class="viewcode-block" id="PdPy.createArray"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.createArray">[docs]</a>  <span class="k">def</span> <span class="nf">createArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Create a GOP Array construction on the canvas &quot;&quot;&quot;</span>
+    <span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">()</span>
+    <span class="n">canvas</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d__</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">canvas</span><span class="o">.</span><span class="n">vis</span> <span class="o">=</span> <span class="mi">0</span>
     
-    <span class="n">max_width</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">max_height</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">canvas</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">set_height</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__d__</span><span class="o">.</span><span class="n">arrdimen</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">])</span>
+    <span class="n">array</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+    <span class="n">array</span><span class="o">.</span><span class="n">__parent__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">canvas</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
-      <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">__get_obj_size__</span><span class="p">()</span>
-      <span class="n">canvas</span><span class="o">.</span><span class="n">update_cursor</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">)</span>
-      <span class="c1"># if width &gt;= max_width:</span>
-      <span class="c1">#   max_width = width</span>
-      <span class="c1"># if height &gt;= max_height:</span>
-      <span class="c1">#   max_height = height</span>
-      <span class="c1"># canvas.update_cursor(width=max_width, height=max_height)</span>
-      <span class="n">node</span><span class="o">.</span><span class="n">addpos</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">__cursor__</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">canvas</span><span class="o">.</span><span class="n">__cursor__</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
-
-
-<div class="viewcode-block" id="PdPy.arrange"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.arrange">[docs]</a>  <span class="k">def</span> <span class="nf">arrange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-    <span class="n">__last_canvas__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span>
-    <span class="n">edges</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="n">sources</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">sinks</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">__last_canvas__</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
-      <span class="n">src</span> <span class="o">=</span> <span class="n">__last_canvas__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">edge</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-      <span class="n">snk</span> <span class="o">=</span> <span class="n">__last_canvas__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">edge</span><span class="o">.</span><span class="n">sink</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-      <span class="n">edges</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">src</span><span class="p">,</span><span class="n">snk</span><span class="p">))</span>
-      <span class="k">if</span> <span class="n">src</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">:</span> 
-        <span class="n">sources</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
-      <span class="k">if</span> <span class="n">snk</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sinks</span><span class="p">:</span> 
-        <span class="n">sinks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">snk</span><span class="p">)</span>
-
-    <span class="n">unconnected</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">__last_canvas__</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
-      <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sources</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sinks</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">unconnected</span><span class="p">:</span>
-        <span class="n">unconnected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">__last_canvas__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-
-    <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">__add_xy__</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="n">__last_canvas__</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">unconnected</span><span class="p">:</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">__add_xy__</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">__last_canvas__</span><span class="p">)</span></div>
-      
-
-<div class="viewcode-block" id="PdPy.write"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.write">[docs]</a>  <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="s1">&#39;coords&#39;</span><span class="p">,</span> <span class="n">Coords</span><span class="p">(</span><span class="n">gop</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="s1">&#39;isgraph&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    
+    <span class="bp">self</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">canvas</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="bp">self</span></div>
+    
+<div class="viewcode-block" id="PdPy.write"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.write">[docs]</a>  <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Write out the pd file to disk &quot;&quot;&quot;</span>
     
-    <span class="bp">self</span><span class="o">.</span><span class="n">arrange</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__arrange__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
       <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patchname</span> <span class="o">+</span> <span class="s1">&#39;.pd&#39;</span>
-
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">patchfile</span><span class="p">:</span>
-      <span class="k">if</span> <span class="s1">&#39;.pd&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
-        <span class="n">patchfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__pd__</span><span class="p">())</span>
-      <span class="k">elif</span> <span class="s1">&#39;.json&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+    
+    <span class="k">if</span> <span class="s1">&#39;.pd&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+      <span class="k">try</span><span class="p">:</span>
+        <span class="n">binbuf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pd__</span><span class="p">()</span>
+      <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s2">&quot;ERROR WITH BINBUF&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">patchname</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+      <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">patchfile</span><span class="p">:</span>
+        <span class="n">patchfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">binbuf</span><span class="p">)</span>
+    
+    <span class="k">elif</span> <span class="s1">&#39;.json&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+      <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">patchfile</span><span class="p">:</span>
         <span class="n">patchfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__json__</span><span class="p">())</span></div>
   
-<div class="viewcode-block" id="PdPy.connect"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.connect">[docs]</a>  <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">argv</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Attempt to autoconnect the objects together &quot;&quot;&quot;</span>
-    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
-    
-    <span class="n">stepsize</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">maxlen</span> <span class="o">=</span> <span class="n">length</span> <span class="o">-</span> <span class="mi">1</span>
-    
-    <span class="c1"># utility routine </span>
-    <span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span><span class="o">*</span><span class="n">argv</span><span class="p">):</span>
-      <span class="n">e</span> <span class="o">=</span> <span class="n">Edge</span><span class="p">(</span><span class="n">pd_lines</span><span class="o">=</span><span class="n">argv</span><span class="p">)</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxlen</span><span class="p">,</span> <span class="n">stepsize</span><span class="p">):</span>
-      <span class="n">src</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="c1"># the source</span>
-      <span class="n">snk</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># the sink</span>
-      <span class="c1"># check if we are lists</span>
-      <span class="n">srclist</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
-      <span class="n">snklist</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">snk</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
-      <span class="c1"># neither is a list</span>
-      <span class="k">if</span> <span class="ow">not</span> <span class="n">srclist</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">snklist</span><span class="p">:</span>
-        <span class="n">_connect</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">snk</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-      <span class="c1"># only sink is a list (connect sequentially to multiple inlets)</span>
-      <span class="k">elif</span> <span class="ow">not</span> <span class="n">srclist</span> <span class="ow">and</span> <span class="n">snklist</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">snk</span><span class="p">)):</span>
-          <span class="n">_connect</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">snk</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">snk</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-      <span class="c1"># only source is a list (connect sequentially from multiple outlets)</span>
-      <span class="k">elif</span> <span class="n">srclist</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">snklist</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="p">)):</span>
-          <span class="n">_connect</span><span class="p">(</span><span class="n">src</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">src</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">snk</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  
-      <span class="c1"># both are lists (limit to minimum iolets between source and sink), so</span>
-      <span class="c1"># connect([source, 0, 1, 2], [sink, 1, 2]) gives</span>
-      <span class="c1"># #X connect source.id 0 sink.id 1</span>
-      <span class="c1"># #X connect source.id 1 sink.id 2 </span>
-      <span class="k">elif</span> <span class="n">srclist</span> <span class="ow">and</span> <span class="n">snklist</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">snk</span><span class="p">))):</span>
-          <span class="n">_connect</span><span class="p">(</span><span class="n">src</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">src</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">snk</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">snk</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
-  
-    
-
-<div class="viewcode-block" id="PdPy.parse"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.parse">[docs]</a>  <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argvecs</span><span class="p">):</span>
+<div class="viewcode-block" id="PdPy.parse"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.parse">[docs]</a>  <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argvecs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Parse a list of Pd argument vectors (1) into this instance&#39;s scope</span>
 
 <span class="sd">    Description:</span>
@@ -617,29 +557,112 @@
     
     <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__tree__</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PdPy.pdpath"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.pdpath">[docs]</a>  <span class="k">def</span> <span class="nf">pdpath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_to_pd</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-    <span class="n">pdpath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path_to_pd</span><span class="p">)</span>
-    <span class="n">apps</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">pdpath</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;Pd*.app&quot;</span><span class="p">))]</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">apps</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-      <span class="n">pdbinpath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">apps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span><span class="o">+</span><span class="s2">&quot;/Contents/Resources/bin/pd&quot;</span><span class="p">)</span>
-      <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;pdbin&#39;</span><span class="p">,</span> <span class="n">pdbinpath</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not find pd in &quot;</span> <span class="o">+</span> <span class="n">path_to_pd</span><span class="p">)</span></div>
-  
-<div class="viewcode-block" id="PdPy.run"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.pdpy.PdPy.run">[docs]</a>  <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__set_pd_path__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_to_pd</span><span class="p">):</span>
+      <span class="sd">&quot;&quot;&quot; Attempt to locate the ``pd`` executable</span>
+<span class="sd">      &quot;&quot;&quot;</span>
+      
+      <span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">platform</span>
+      <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+      
+      <span class="n">installed</span> <span class="o">=</span> <span class="kc">False</span>
+      
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found &quot;</span><span class="p">,</span> <span class="n">platform</span><span class="p">,</span> <span class="s2">&quot; platform.&quot;</span><span class="p">)</span>
+      
+      <span class="k">if</span> <span class="s2">&quot;darwin&quot;</span> <span class="ow">in</span> <span class="n">platform</span><span class="p">:</span> <span class="c1"># macos</span>
+        <span class="n">pdpath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/Applications&quot;</span><span class="p">)</span>
+        <span class="n">bindir</span> <span class="o">=</span> <span class="s2">&quot;/Contents/Resources/bin/pd&quot;</span>
+      <span class="k">elif</span> <span class="s2">&quot;win&quot;</span> <span class="ow">in</span> <span class="n">platform</span><span class="p">:</span> <span class="c1"># windoz</span>
+        <span class="n">pdpath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;C:/Program Files (x86)&quot;</span><span class="p">)</span>
+        <span class="n">bindir</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/pd&quot;</span>
+      <span class="k">else</span><span class="p">:</span> <span class="c1"># asume pd is out there</span>
+        <span class="n">installed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">pdbin</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+      
+      <span class="k">if</span> <span class="n">path_to_pd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pdpath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path_to_pd</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="n">installed</span><span class="p">:</span>
+        <span class="n">pdbin</span> <span class="o">+=</span> <span class="s2">&quot;pd&quot;</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Locating pd...&quot;</span><span class="p">)</span>
+        <span class="n">apps</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">pdpath</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;Pd*.app&quot;</span><span class="p">))]</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">apps</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+          <span class="n">appdir</span> <span class="o">=</span> <span class="n">apps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not find pd in &quot;</span> <span class="o">+</span> <span class="n">pdpath</span><span class="p">)</span>
+
+        <span class="n">pdbin</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">appdir</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span> <span class="o">+</span> <span class="n">bindir</span><span class="p">)</span>
+      
+      <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">pdbin</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found pd at: &quot;</span><span class="p">,</span> <span class="n">pdbin</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;__pdbin__&#39;</span><span class="p">,</span> <span class="n">pdbin</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;This pd binary does not exist: &quot;</span> <span class="o">+</span> <span class="n">pdbin</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+    
+<div class="viewcode-block" id="PdPy.run"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.run">[docs]</a>  <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">run</span> <span class="k">as</span> <span class="n">__run__</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;patchname&#39;</span><span class="p">):</span>
       <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No patchname found&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;__pdbin__&#39;</span><span class="p">):</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Pd binary not set.&quot;</span><span class="p">)</span>
     <span class="n">command</span> <span class="o">=</span> <span class="p">[</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">pdbin</span><span class="o">.</span><span class="n">as_posix</span><span class="p">(),</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">__pdbin__</span><span class="o">.</span><span class="n">as_posix</span><span class="p">(),</span>
       <span class="s2">&quot;-open&quot;</span><span class="p">,</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">patchname</span><span class="o">+</span><span class="s2">&quot;.pd&quot;</span><span class="p">,</span>
     <span class="p">]</span>
-    <span class="n">__run__</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">command</span><span class="p">),</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
+    <span class="n">__run__</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">command</span><span class="p">),</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-
+  <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span>
   
+  <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx_type</span><span class="p">,</span> <span class="n">ctx_value</span><span class="p">,</span> <span class="n">ctx_traceback</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+
+<div class="viewcode-block" id="PdPy.arrangement"><a class="viewcode-back" href="../../../classes/patching.html#pdpy.classes.pdpy.PdPy.arrangement">[docs]</a>  <span class="k">def</span> <span class="nf">arrangement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">choice</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Sets the arrange function from :module;`util`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    ``choice``: the choices are numbered starting at 0</span>
+<span class="sd">    if negative or not one of the available choices,</span>
+<span class="sd">    it defaults to ``arrange1b``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+      <span class="c1"># good, but fails on circular conections</span>
+      <span class="kn">from</span> <span class="nn">..util.arrange</span> <span class="kn">import</span> <span class="n">arrange</span> <span class="k">as</span> <span class="n">_do_arrange</span>
+    <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> 
+      <span class="c1"># this one fails</span>
+      <span class="kn">from</span> <span class="nn">..util.arrange1</span> <span class="kn">import</span> <span class="n">arrange1</span> <span class="k">as</span> <span class="n">_do_arrange</span>
+    <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> 
+      <span class="c1"># fails on dac~</span>
+      <span class="kn">from</span> <span class="nn">..util.arrange1a</span> <span class="kn">import</span> <span class="n">arrange1a</span> <span class="k">as</span> <span class="n">_do_arrange</span>
+    <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span> 
+      <span class="c1"># max recursion depth error</span>
+      <span class="kn">from</span> <span class="nn">..util.arrange2</span> <span class="kn">import</span> <span class="n">arrange2</span> <span class="k">as</span> <span class="n">_do_arrange</span>
+    <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span> 
+      <span class="c1"># max recursion depth error</span>
+      <span class="kn">from</span> <span class="nn">..util.arranger</span> <span class="kn">import</span> <span class="n">Arrange</span> <span class="k">as</span> <span class="n">_do_arrange</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="c1"># this one is nice (fails on dac~)</span>
+      <span class="kn">from</span> <span class="nn">..util.arrange1b</span> <span class="kn">import</span> <span class="n">arrange1b</span> <span class="k">as</span> <span class="n">_do_arrange</span>
+
+    <span class="k">def</span> <span class="nf">_recurse_arrange</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+      <span class="c1"># in every child of ``node``, check if child is a parent</span>
+      <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s1">&#39;nodes&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="s1">&#39;nodes&#39;</span><span class="p">):</span>
+          <span class="c1"># it is a parent, so recurse</span>
+          <span class="n">_recurse_arrange</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+      <span class="c1"># finally, arrange</span>
+      <span class="n">_do_arrange</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">_begin_arrange</span><span class="p">(</span><span class="n">scope</span><span class="p">):</span>
+      <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="s1">&#39;root&#39;</span><span class="p">):</span>
+        <span class="n">_recurse_arrange</span><span class="p">(</span><span class="n">scope</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">__arrange__</span> <span class="o">=</span> <span class="n">_begin_arrange</span></div></div>
+    
 </pre></div>
 
            </div>

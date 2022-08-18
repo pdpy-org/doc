@@ -115,19 +115,19 @@ The final code is shown first, then you can see it explained line by line.</p>
 </pre></div>
 </div>
 <p>We will briefly go through these classes in this example.
-To find out more about these classes, you can go to <a class="reference internal" href="../classes/base.html#pdpy.classes.pdpy.PdPy" title="pdpy.classes.pdpy.PdPy"><code class="xref py py-class docutils literal notranslate"><span class="pre">pdpy.classes.pdpy.PdPy</span></code></a>, <a class="reference internal" href="../classes/objects.html#pdpy.classes.obj.Obj" title="pdpy.classes.obj.Obj"><code class="xref py py-class docutils literal notranslate"><span class="pre">pdpy.classes.obj.Obj</span></code></a>, and <a class="reference internal" href="../classes/objects.html#pdpy.classes.message.Msg" title="pdpy.classes.message.Msg"><code class="xref py py-class docutils literal notranslate"><span class="pre">pdpy.classes.message.Msg</span></code></a>.</p>
+To find out more about these classes, you can go to <code class="xref py py-class docutils literal notranslate"><span class="pre">pdpy.classes.pdpy.PdPy</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pdpy.classes.obj.Obj</span></code>, and <code class="xref py py-class docutils literal notranslate"><span class="pre">pdpy.classes.message.Msg</span></code>.</p>
 </section>
 <section id="a-pdpy-patch">
 <h2>A PdPy patch<a class="headerlink" href="#a-pdpy-patch" title="Permalink to this heading">¶</a></h2>
 <p>The PdPy class contains a representation of a Pure Data patch.
 With the <code class="docutils literal notranslate"><span class="pre">PdPy</span></code> class we can initialize a pdpy root patch (line 2):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mypatch</span> <span class="o">=</span> <span class="n">PdPy</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;simple_patch&quot;</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mypatch</span> <span class="o">=</span> <span class="n">PdPy</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;holamundo&quot;</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">name</span></code> keyword argument stores the name of the patch, in this case <code class="docutils literal notranslate"><span class="pre">simple_patch</span></code>.
+<p>The <code class="docutils literal notranslate"><span class="pre">name</span></code> keyword argument stores the name of the patch, in this case <code class="docutils literal notranslate"><span class="pre">holamundo</span></code>.
 Because we want <code class="docutils literal notranslate"><span class="pre">mypatch</span></code> to be the <code class="docutils literal notranslate"><span class="pre">root</span></code> of our Pure Data patch (or in pd-lingo, the parent canvas), we set it to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
 <p>There are more keyword arguments available, but we wont need them here.
-You can go to <a class="reference internal" href="../classes/base.html#pdpy.classes.pdpy.PdPy" title="pdpy.classes.pdpy.PdPy"><code class="xref py py-class docutils literal notranslate"><span class="pre">pdpy.classes.pdpy.PdPy</span></code></a> to see it in full.</p>
+You can go to <code class="xref py py-class docutils literal notranslate"><span class="pre">pdpy.classes.pdpy.PdPy</span></code> to see it in full.</p>
 </section>
 <section id="objects">
 <h2>Objects<a class="headerlink" href="#objects" title="Permalink to this heading">¶</a></h2>
@@ -201,7 +201,7 @@ We do this with the <code class="docutils literal notranslate"><span class="pre"
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mypatch</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>After writing the patch, you should be able to find a <code class="docutils literal notranslate"><span class="pre">simple_patch.pd</span></code> file
+<p>After writing the patch, you should be able to find a <code class="docutils literal notranslate"><span class="pre">holamundo.pd</span></code> file
 in the same directory you were running the python code.</p>
 </section>
 </section>

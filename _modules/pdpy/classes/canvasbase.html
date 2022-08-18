@@ -87,6 +87,7 @@
 <span class="c1"># **************************************************************************** #</span>
 <span class="sd">&quot;&quot;&quot; Canvas Base Class Definition &quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">.connections</span> <span class="kn">import</span> <span class="n">Edge</span>
 <span class="kn">from</span> <span class="nn">.xmlbuilder</span> <span class="kn">import</span> <span class="n">XmlBuilder</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;CanvasBase&#39;</span> <span class="p">]</span>
@@ -148,15 +149,17 @@
       <span class="n">s</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">__pd__</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">s</span>
 
-  <span class="k">def</span> <span class="nf">__restore__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__restore__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">isgraph</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;position&#39;</span><span class="p">):</span>
       <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;#X restore &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">__pd__</span><span class="p">()</span>
       <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">):</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
+      <span class="k">if</span> <span class="n">isgraph</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot; graph&quot;</span>
       <span class="n">s</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__end__</span>
     <span class="k">return</span> <span class="n">s</span>
   
-  <span class="k">def</span> <span class="nf">__render__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">isroot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__render__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">isroot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">isgraph</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nodes__</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
     <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__comments__</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">isroot</span><span class="p">:</span>
@@ -166,7 +169,7 @@
     <span class="k">else</span><span class="p">:</span>
       <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__edges__</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
       <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__coords__</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__restore__</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__restore__</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">isgraph</span><span class="o">=</span><span class="n">isgraph</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">s</span>
   
   <span class="k">def</span> <span class="nf">__xml_nodes__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
@@ -189,7 +192,108 @@
       <span class="n">edges</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__element__</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s1">&#39;edges&#39;</span><span class="p">)</span>
       <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;edges&#39;</span><span class="p">,</span> <span class="p">[]):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__subelement__</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">__xml__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__obj_map__</span><span class="p">))</span>
-      <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__subelement__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span></div>
+      <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__subelement__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CanvasBase.edge"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.canvasbase.CanvasBase.edge">[docs]</a>  <span class="k">def</span> <span class="nf">edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Append a pure data connection (edge)</span>
+
+<span class="sd">    Description:</span>
+<span class="sd">    ------------</span>
+<span class="sd">    This method creates and/or appends a pure data connection as an `Edge`.</span>
+<span class="sd">    See `Edge` to see how connections are handled.</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;edges&#39;</span><span class="p">):</span> 
+      <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__parent__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edge</span><span class="o">.</span><span class="n">connect</span><span class="p">())</span></div>
+    <span class="c1"># log(1,&quot;Edge&quot;,edge.__dict__)</span>
+
+<div class="viewcode-block" id="CanvasBase.connect"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.canvasbase.CanvasBase.connect">[docs]</a>  <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">argv</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Attempt to autoconnect the objects together &quot;&quot;&quot;</span>
+    <span class="n">cnv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;__last_canvas__&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span>
+
+    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    
+    <span class="n">stepsize</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">maxlen</span> <span class="o">=</span> <span class="n">length</span> <span class="o">-</span> <span class="mi">1</span>
+    
+    <span class="c1"># utility routine </span>
+    <span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span><span class="o">*</span><span class="n">argv</span><span class="p">):</span>
+      <span class="n">e</span> <span class="o">=</span> <span class="n">Edge</span><span class="p">(</span><span class="n">pd_lines</span><span class="o">=</span><span class="n">argv</span><span class="p">)</span>
+      <span class="n">cnv</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxlen</span><span class="p">,</span> <span class="n">stepsize</span><span class="p">):</span>
+      <span class="n">src</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="c1"># the source</span>
+      <span class="n">snk</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># the sink</span>
+      <span class="c1"># check if we are lists</span>
+      <span class="n">srclist</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+      <span class="n">snklist</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">snk</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+      <span class="c1"># neither is a list</span>
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">srclist</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">snklist</span><span class="p">:</span>
+        <span class="n">_connect</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">snk</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="c1"># only sink is a list (connect sequentially to multiple inlets)</span>
+      <span class="k">elif</span> <span class="ow">not</span> <span class="n">srclist</span> <span class="ow">and</span> <span class="n">snklist</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">snk</span><span class="p">)):</span>
+          <span class="n">_connect</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">snk</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">snk</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+      <span class="c1"># only source is a list (connect sequentially from multiple outlets)</span>
+      <span class="k">elif</span> <span class="n">srclist</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">snklist</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="p">)):</span>
+          <span class="n">_connect</span><span class="p">(</span><span class="n">src</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">src</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">snk</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  
+      <span class="c1"># both are lists (limit to minimum iolets between source and sink), so</span>
+      <span class="c1"># connect([source, 0, 1, 2], [sink, 1, 2]) gives</span>
+      <span class="c1"># #X connect source.id 0 sink.id 1</span>
+      <span class="c1"># #X connect source.id 1 sink.id 2 </span>
+      <span class="k">elif</span> <span class="n">srclist</span> <span class="ow">and</span> <span class="n">snklist</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">snk</span><span class="p">))):</span>
+          <span class="n">_connect</span><span class="p">(</span><span class="n">src</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">src</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">snk</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">snk</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="CanvasBase.create"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.canvasbase.CanvasBase.create">[docs]</a>  <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">anything</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Create an object, message, comment, or any other pd object &quot;&quot;&quot;</span>
+    <span class="n">cnv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;__last_canvas__&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">anything</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">__obj_idx__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grow</span><span class="p">()</span>
+      <span class="n">a</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">cnv</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+      <span class="n">a</span><span class="o">.</span><span class="n">__parent__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">cnv</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="CanvasBase.createCanvas"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.canvasbase.CanvasBase.createCanvas">[docs]</a>  <span class="k">def</span> <span class="nf">createCanvas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Create a subpatch &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.canvas</span> <span class="kn">import</span> <span class="n">Canvas</span>
+    <span class="n">new_canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">last_canvas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__last_canvas__</span><span class="p">()</span>
+    <span class="n">new_canvas</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obj_idx__</span>
+    <span class="n">new_canvas</span><span class="o">.</span><span class="n">__parent__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">last_canvas</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__canvas_idx__</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last_canvas</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_canvas</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">new_canvas</span></div>
+
+<div class="viewcode-block" id="CanvasBase.grow"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.canvasbase.CanvasBase.grow">[docs]</a>  <span class="k">def</span> <span class="nf">grow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Increments the canvas object index by 1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__obj_idx__</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obj_idx__</span></div>
+  
+<div class="viewcode-block" id="CanvasBase.add"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.canvasbase.CanvasBase.add">[docs]</a>  <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Add (append) a Node to this canvas `nodes`</span>
+
+<span class="sd">    Description:</span>
+<span class="sd">    ------------</span>
+<span class="sd">    This method creates and/or appends a &#39;node&#39; to an internal array `nodes`.</span>
+<span class="sd">    Each node is a Pure Data object that is neither a comment nor a connection</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    The position (index) of the most recently added node</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;nodes&#39;</span><span class="p">):</span> 
+      <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span></div></div>
 </pre></div>
 
            </div>

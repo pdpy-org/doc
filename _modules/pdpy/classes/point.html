@@ -93,6 +93,21 @@
 
 <div class="viewcode-block" id="Point"><a class="viewcode-back" href="../../../classes/primitives.html#pdpy.classes.point.Point">[docs]</a><span class="k">class</span> <span class="nc">Point</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xml</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A point in x-y space</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    All of the following are optional:</span>
+
+<span class="sd">    ``x``: the position in the X-axis</span>
+<span class="sd">    ``y``: the position in the Y-axis</span>
+<span class="sd">    ``json``: a json dictionary like ``{x:value, y:value}``</span>
+<span class="sd">    ``xml``: an XML Element with children``&lt;x&gt;value&lt;/x&gt;&lt;y&gt;value&lt;/y&gt;``</span>
+<span class="sd">    </span>
+<span class="sd">    If no arguments are provided, </span>
+<span class="sd">    the default values are from the ``screen`` attribute in :class:`Default`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__pdpy__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">json</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -108,7 +123,11 @@
       <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d__</span><span class="o">.</span><span class="n">screen</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
     
   <span class="k">def</span> <span class="nf">__pd__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">ve</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">ve</span><span class="p">,</span> <span class="s2">&quot;in object&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;named&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getname</span><span class="p">())</span>
+
 
   <span class="k">def</span> <span class="nf">__xml__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Return an XML Element &quot;&quot;&quot;</span>
