@@ -40,8 +40,7 @@ jobs:
           git clone https://github.com/pdpy-org/pdpy.git
       - name: Install local pdpy and make the docs
         run: |
-          cd pdpy && make local
-          cd docs && make html
+          cd pdpy && make local && cd docs && make html
       - name: Copy documentation changes and remove pdpy
         run: |
           cp -r pdpy/docs/_build/html/* .
