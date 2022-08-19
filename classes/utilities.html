@@ -56,14 +56,7 @@
 <li class="toctree-l2"><a class="reference internal" href="patching.html">Patching</a></li>
 <li class="toctree-l2"><a class="reference internal" href="primitives.html">Primitives</a></li>
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base Classes</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Utilities</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#module-pdpy.classes.translator">Classes</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#arrange">Arrange</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#module-pdpy.util.utils">Functions</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="encoders.html">Encoding/Decoding</a></li>
 </ul>
 </li>
@@ -99,10 +92,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="utilities">
-<h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this heading">¶</a></h1>
-<section id="module-pdpy.classes.translator">
-<span id="classes"></span><h2>Classes<a class="headerlink" href="#module-pdpy.classes.translator" title="Permalink to this heading">¶</a></h2>
+  <section id="module-pdpy.classes.translator">
+<span id="utilities"></span><h1>Utilities<a class="headerlink" href="#module-pdpy.classes.translator" title="Permalink to this heading">¶</a></h1>
 <p>Translator class</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pdpy.classes.translator.Translator">
@@ -124,171 +115,7 @@ a <cite>.pkl</cite> (aka, pickle) file  containing a <cite>pdpy</cite> object.</
 <cite>reflect</cite>   (<cite>bool</cite>): If set to <cite>True</cite>, performs a reflected translation</p>
 </dd></dl>
 
-<span class="target" id="module-pdpy.util.arranger"></span><section id="arrange">
-<h3>Arrange<a class="headerlink" href="#arrange" title="Permalink to this heading">¶</a></h3>
-<dl class="py class">
-<dt class="sig sig-object py" id="pdpy.util.arranger.Arrange">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdpy.util.arranger.</span></span><span class="sig-name descname"><span class="pre">Arrange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">canvas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hstep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vstep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmargin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ymargin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/util/arranger.html#Arrange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.util.arranger.Arrange" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Arrange objects on a 2d surface</p>
-<p>This class attempts to arrange objects graphically on the self.canvas.
-To use, simply import and call the class.</p>
-<p>The main algorithm consists of initialization and three steps:</p>
-<ol class="arabic simple">
-<li><p>Initialization</p></li>
-<li><p>step1: <a class="reference internal" href="#pdpy.util.arranger.Arrange.step1" title="pdpy.util.arranger.Arrange.step1"><code class="xref py py-func docutils literal notranslate"><span class="pre">step1()</span></code></a></p></li>
-<li><p>step2: <a class="reference internal" href="#pdpy.util.arranger.Arrange.step2" title="pdpy.util.arranger.Arrange.step2"><code class="xref py py-func docutils literal notranslate"><span class="pre">step2()</span></code></a></p></li>
-<li><p>step3: <a class="reference internal" href="#pdpy.util.arranger.Arrange.step3" title="pdpy.util.arranger.Arrange.step3"><code class="xref py py-func docutils literal notranslate"><span class="pre">step3()</span></code></a></p></li>
-</ol>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>canvas</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pdpy.pdpy.canvas.Canvas</span></code>) – The canvas to arrange</p></li>
-<li><p><strong>verbose</strong> (<cite>bool</cite>) – (optional) set verbosity level (default: <cite>False</cite>)</p></li>
-<li><p><strong>hstep</strong> (<cite>float</cite>) – <p>(optional) set the horizontal step factor for x-increments (default: <cite>1.5</cite>)</p>
-<p>This factor multiplies the width maxima of all nodes in a canvas.</p>
-</p></li>
-<li><p><strong>vstep</strong> (<cite>float</cite>) – <p>(optional) set the vertical step factor for y-increments (default: <cite>1</cite>)</p>
-<p>This factor multiplies the height maxima of all nodes in a canvas.</p>
-</p></li>
-<li><p><strong>xmargin</strong> (<cite>int</cite>) – (optional) set the initial x margin on the canvas (default: <cite>10</cite>)</p></li>
-<li><p><strong>xmargin</strong> – (optional) set the initial x margin on the canvas (default: <cite>10</cite>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><cite>None</cite></p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Exception</strong> – if there were errors during arrangement</p></li>
-<li><p><strong>ValueError</strong> – if the <cite>Canvas</cite> has no nodes to arrange</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<p>Import the PdPy and Arrange classes</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.classes.pdpy</span> <span class="kn">import</span> <span class="n">PdPy</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.util.arrange</span> <span class="kn">import</span> <span class="n">Arrange</span> <span class="k">as</span> <span class="n">arrange</span>
-</pre></div>
-</div>
-<p>Create the PdPy instance (and add some objects)</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd</span> <span class="o">=</span> <span class="n">PdPy</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Call the function</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">arrange</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.util.arranger.Arrange.step1">
-<span class="sig-name descname"><span class="pre">step1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/util/arranger.html#Arrange.step1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.util.arranger.Arrange.step1" title="Permalink to this definition">¶</a></dt>
-<dd><p>Step 1: Take the object from the object list</p>
-<p>This step takes no arguments and performs the following instructions:</p>
-<ol class="arabic simple">
-<li><p>take an object from the object list</p></li>
-<li><p>place the object</p></li>
-<li><p>pass the object to <a class="reference internal" href="#pdpy.util.arranger.Arrange.step2" title="pdpy.util.arranger.Arrange.step2"><code class="xref py py-func docutils literal notranslate"><span class="pre">step2()</span></code></a> without callback</p></li>
-</ol>
-<p>If there are no objects on the list, it returns</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><cite>None</cite></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.util.arranger.Arrange.step2">
-<span class="sig-name descname"><span class="pre">step2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relocate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/util/arranger.html#Arrange.step2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.util.arranger.Arrange.step2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Step 2: Take the object’s children from the object list</p>
-<p>This step takes performs the following instructions:</p>
-<ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">return</span></code> if the <cite>obj</cite> has no children</p></li>
-<li><p>otherwise, pop all children from the object list</p></li>
-</ol>
-<p>For each child, if the child is not on the object list:</p>
-<ol class="arabic simple">
-<li><p>If the child is not placed, place it, otherwise move it</p></li>
-<li><p>If <code class="docutils literal notranslate"><span class="pre">relocate</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, run the relocator on that child</p></li>
-</ol>
-<p>If there are popped children, pass them to <a class="reference internal" href="#pdpy.util.arranger.Arrange.step3" title="pdpy.util.arranger.Arrange.step3"><code class="xref py py-func docutils literal notranslate"><span class="pre">step3()</span></code></a>, otherwise</p>
-<ol class="arabic simple">
-<li><p>reset y-position</p></li>
-<li><p>and go back to <a class="reference internal" href="#pdpy.util.arranger.Arrange.step1" title="pdpy.util.arranger.Arrange.step1"><code class="xref py py-func docutils literal notranslate"><span class="pre">step1()</span></code></a></p></li>
-</ol>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>obj</strong> (<a class="reference internal" href="base.html#pdpy.classes.object.Object" title="pdpy.classes.object.Object"><code class="xref py py-class docutils literal notranslate"><span class="pre">pdpy.classes.object.Object</span></code></a>) – A patchable PdPy object based on <cite>object</cite> with a <cite>position</cite> attribute</p></li>
-<li><p><strong>relocate</strong> (<code class="docutils literal notranslate"><span class="pre">callback</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – A callback function to perform object relocation</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><cite>None</cite></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.util.arranger.Arrange.step3">
-<span class="sig-name descname"><span class="pre">step3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">children</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/util/arranger.html#Arrange.step3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.util.arranger.Arrange.step3" title="Permalink to this definition">¶</a></dt>
-<dd><p>Step3: Place every child</p>
-<p>For every child in the <code class="docutils literal notranslate"><span class="pre">children</span></code> list:</p>
-<ol class="arabic simple">
-<li><p>Adjust y-position</p></li>
-<li><p>Adjust x-position</p></li>
-<li><p>Place the child</p></li>
-<li><p>Pass the child to <a class="reference internal" href="#pdpy.util.arranger.Arrange.step2" title="pdpy.util.arranger.Arrange.step2"><code class="xref py py-func docutils literal notranslate"><span class="pre">step2()</span></code></a> with <code class="docutils literal notranslate"><span class="pre">relocate=True</span></code></p></li>
-</ol>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>obj</strong> (<a class="reference internal" href="base.html#pdpy.classes.object.Object" title="pdpy.classes.object.Object"><code class="xref py py-class docutils literal notranslate"><span class="pre">pdpy.classes.object.Object</span></code></a>) – The PdPy object with <code class="docutils literal notranslate"><span class="pre">position</span></code> attribute</p></li>
-<li><p><strong>children</strong> (<code class="docutils literal notranslate"><span class="pre">list</span></code>) – The list of children whose parent is the passed <code class="docutils literal notranslate"><span class="pre">obj</span></code></p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</section>
-<span class="target" id="module-pdpy.classes.default"></span><p>Pure Data Default Definitions</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="pdpy.classes.default.Default">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdpy.classes.default.</span></span><span class="sig-name descname"><span class="pre">Default</span></span><a class="reference internal" href="../_modules/pdpy/classes/default.html#Default"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.default.Default" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pdpy.classes.default.Namespace">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdpy.classes.default.</span></span><span class="sig-name descname"><span class="pre">Namespace</span></span><a class="reference internal" href="../_modules/pdpy/classes/default.html#Namespace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.default.Namespace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>PdPy Namespace</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pdpy.classes.default.getFormat">
-<span class="sig-prename descclassname"><span class="pre">pdpy.classes.default.</span></span><span class="sig-name descname"><span class="pre">getFormat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/default.html#getFormat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.default.getFormat" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<span class="target" id="module-pdpy.classes.exceptions"></span><p>Exception Definitions</p>
-<dl class="py exception">
-<dt class="sig sig-object py" id="pdpy.classes.exceptions.ArgumentException">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdpy.classes.exceptions.</span></span><span class="sig-name descname"><span class="pre">ArgumentException</span></span><a class="reference internal" href="../_modules/pdpy/classes/exceptions.html#ArgumentException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.exceptions.ArgumentException" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="pdpy.classes.exceptions.MalformedName">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdpy.classes.exceptions.</span></span><span class="sig-name descname"><span class="pre">MalformedName</span></span><a class="reference internal" href="../_modules/pdpy/classes/exceptions.html#MalformedName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.exceptions.MalformedName" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-</dd></dl>
-
-</section>
-<section id="module-pdpy.util.utils">
-<span id="functions"></span><h2>Functions<a class="headerlink" href="#module-pdpy.util.utils" title="Permalink to this heading">¶</a></h2>
-<p>Utilities</p>
+<span class="target" id="module-pdpy.util.utils"></span><p>Utilities</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pdpy.util.utils.checknum">
 <span class="sig-prename descclassname"><span class="pre">pdpy.util.utils.</span></span><span class="sig-name descname"><span class="pre">checknum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/util/utils.html#checknum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.util.utils.checknum" title="Permalink to this definition">¶</a></dt>
@@ -360,7 +187,38 @@ and returns a list of lists or the original string</p>
 </dl>
 </dd></dl>
 
-</section>
+<span class="target" id="module-pdpy.classes.default"></span><p>Pure Data Default Definitions</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pdpy.classes.default.Default">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdpy.classes.default.</span></span><span class="sig-name descname"><span class="pre">Default</span></span><a class="reference internal" href="../_modules/pdpy/classes/default.html#Default"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.default.Default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pdpy.classes.default.Namespace">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdpy.classes.default.</span></span><span class="sig-name descname"><span class="pre">Namespace</span></span><a class="reference internal" href="../_modules/pdpy/classes/default.html#Namespace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.default.Namespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>PdPy Namespace</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pdpy.classes.default.getFormat">
+<span class="sig-prename descclassname"><span class="pre">pdpy.classes.default.</span></span><span class="sig-name descname"><span class="pre">getFormat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/default.html#getFormat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.default.getFormat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<span class="target" id="module-pdpy.classes.exceptions"></span><p>Exception Definitions</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="pdpy.classes.exceptions.ArgumentException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdpy.classes.exceptions.</span></span><span class="sig-name descname"><span class="pre">ArgumentException</span></span><a class="reference internal" href="../_modules/pdpy/classes/exceptions.html#ArgumentException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.exceptions.ArgumentException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pdpy.classes.exceptions.MalformedName">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdpy.classes.exceptions.</span></span><span class="sig-name descname"><span class="pre">MalformedName</span></span><a class="reference internal" href="../_modules/pdpy/classes/exceptions.html#MalformedName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.exceptions.MalformedName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
 </section>
 
 

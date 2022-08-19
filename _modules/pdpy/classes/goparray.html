@@ -88,7 +88,6 @@
 <span class="sd">&quot;&quot;&quot; Class Definitions for GOP Array &quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">Base</span>
-<span class="kn">from</span> <span class="nn">.data</span> <span class="kn">import</span> <span class="n">Data</span>
 <span class="kn">from</span> <span class="nn">.default</span> <span class="kn">import</span> <span class="n">GOPArrayFlags</span>
 <span class="kn">from</span> <span class="nn">..util.utils</span> <span class="kn">import</span>  <span class="n">log</span>
 
@@ -125,23 +124,7 @@
       <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__populate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;className&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">className</span> <span class="o">==</span> <span class="s1">&#39;goparray&#39;</span><span class="p">:</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">__cls__</span> <span class="o">=</span> <span class="s1">&#39;array&#39;</span>
-    <span class="k">else</span><span class="p">:</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">__cls__</span> <span class="o">=</span> <span class="s1">&#39;array&#39;</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;array1&#39;</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d__</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d__</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d__</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="s1">&#39;flag&#39;</span><span class="p">]</span>
-      <span class="k">if</span> <span class="s1">&#39;data&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="n">_data</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
-      <span class="k">else</span><span class="p">:</span>
-        <span class="n">_data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">)]</span>
-      <span class="k">if</span> <span class="s1">&#39;head&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="n">_head</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;head&#39;</span><span class="p">)</span>
-      <span class="k">else</span><span class="p">:</span>
-        <span class="n">_head</span> <span class="o">=</span> <span class="mi">0</span>
-      <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__setdata__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Data</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">_data</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="n">_head</span><span class="p">))</span>
-
-    <span class="c1"># print(&quot;Pdtype&quot;, self.__type__, self.__cls__)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pdtype&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__type__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cls__</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GOPArray.addflag"><a class="viewcode-back" href="../../../classes/data.html#pdpy.classes.goparray.GOPArray.addflag">[docs]</a>  <span class="k">def</span> <span class="nf">addflag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span>
     <span class="c1"># log(1, &quot;Adding flag: {}&quot;.format(flag))</span>
@@ -158,7 +141,7 @@
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;template&#39;</span><span class="p">):</span>
       <span class="k">return</span> <span class="s2">&quot;array &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">)</span>
     
-    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cls__</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;array&#39;</span><span class="p">,</span> <span class="s1">&#39;obj&#39;</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cls__</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;array&#39;</span><span class="p">,</span><span class="s1">&#39;obj&#39;</span><span class="p">):</span>
       <span class="n">s</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__pd__</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">),[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">])))</span>
       <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="p">[]):</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="n">x</span><span class="o">.</span><span class="n">__pd__</span><span class="p">()</span>

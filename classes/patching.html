@@ -53,10 +53,7 @@
 <li class="toctree-l2"><a class="reference internal" href="objects.html">Pure Data Gui Object Definitions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="iemgui.html">IEMGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data.html">Data</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Patching</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#patch">Patch</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Patching</a></li>
 <li class="toctree-l2"><a class="reference internal" href="primitives.html">Primitives</a></li>
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base Classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
@@ -95,225 +92,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-pdpy.classes.patch">
-<span id="patching"></span><h1>Patching<a class="headerlink" href="#module-pdpy.classes.patch" title="Permalink to this heading">¶</a></h1>
-<section id="patch">
-<h2>Patch<a class="headerlink" href="#patch" title="Permalink to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="pdpy.classes.patch.Patch">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdpy.classes.patch.</span></span><span class="sig-name descname"><span class="pre">Patch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">44100</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/patch.html#Patch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.patch.Patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pdpy.classes.pdpy.PdPy" title="pdpy.classes.pdpy.PdPy"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdPy</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PdManager</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PyAudio</span></code></p>
-<p>Patch interface to use pdpy and libpd</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Name for the patch</p></li>
-<li><p><strong>inch</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of input channels (defaults: 2)</p></li>
-<li><p><strong>outch</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of output channels (defaults: 2)</p></li>
-<li><p><strong>sr</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Sample rate (defaults: 44100)</p></li>
-<li><p><strong>**kwargs</strong> – Other keyword arguments are passed to the <a class="reference internal" href="#pdpy.classes.pdpy.PdPy" title="pdpy.classes.pdpy.PdPy"><code class="xref py py-class docutils literal notranslate"><span class="pre">pdpy.classes.pdpy.PdPy</span></code></a> base class</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<p>First, we need to do our import:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pdpy</span>
-</pre></div>
-</div>
-<dl>
-<dt>Now, make a patch with a <code class="docutils literal notranslate"><span class="pre">name</span></code> and set it to be the root patch.</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">patch</span> <span class="o">=</span> <span class="n">pdpy</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd>
-<dt>Create some objects: an oscillator</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">osc</span> <span class="o">=</span> <span class="n">pdpy</span><span class="o">.</span><span class="n">Obj</span><span class="p">(</span><span class="s1">&#39;osc~&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">osc</span><span class="o">.</span><span class="n">addargs</span><span class="p">(</span><span class="mi">440</span><span class="p">)</span>
-<span class="go">&lt;pdpy.classes.obj.Obj object at 0x106ac7850&gt;</span>
-</pre></div>
-</div>
-</dd>
-<dt>Now, let’s make a multiplier and a dac objects</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mul</span> <span class="o">=</span> <span class="n">pdpy</span><span class="o">.</span><span class="n">Obj</span><span class="p">(</span><span class="s1">&#39;*~&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mul</span><span class="o">.</span><span class="n">addargs</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="go">&lt;pdpy.classes.obj.Obj object at 0x106729850&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dac</span> <span class="o">=</span> <span class="n">pdpy</span><span class="o">.</span><span class="n">Obj</span><span class="p">(</span><span class="s1">&#39;dac~&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd>
-<dt>Create the objects and connect them</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">patch</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">osc</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">dac</span><span class="p">)</span>
-<span class="go">&lt;pdpy.classes.patch.Patch object at 0x106755640&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">patch</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">osc</span><span class="p">,</span> <span class="n">mul</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">patch</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="p">[</span><span class="n">dac</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-</pre></div>
-</div>
-</dd>
-<dt>Write the patch</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">patch</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
-<span class="go">Initialized Arrange graph placing algorithm.</span>
-</pre></div>
-</div>
-</dd>
-<dt>Start the audio and perform</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">patch</span><span class="o">.</span><span class="n">start_audio</span><span class="p">()</span>
-<span class="go">&lt;pyaudio.Stream object at 0x106ac74f0&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">patch</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-<p>You should now hear a sinewave at 440 Hz.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.patch.Patch.perform">
-<span class="sig-name descname"><span class="pre">perform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/patch.html#Patch.perform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.patch.Patch.perform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Open the patch and begin the audio stream loop</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.patch.Patch.start_audio">
-<span class="sig-name descname"><span class="pre">start_audio</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/patch.html#Patch.start_audio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.patch.Patch.start_audio" title="Permalink to this definition">¶</a></dt>
-<dd><p>Start the pyaudio stream</p>
-</dd></dl>
-
-</dd></dl>
-
-</section>
-<span class="target" id="module-pdpy.classes.pdpy"></span><p>PdPy class definition</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdpy.classes.pdpy.</span></span><span class="sig-name descname"><span class="pre">PdPy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pd_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xml</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdpath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="base.html#pdpy.classes.canvasbase.CanvasBase" title="pdpy.classes.canvasbase.CanvasBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">CanvasBase</span></code></a>, <a class="reference internal" href="base.html#pdpy.classes.base.Base" title="pdpy.classes.base.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.addCanvas">
-<span class="sig-name descname"><span class="pre">addCanvas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pd_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.addCanvas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.addCanvas" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a Canvas object from pure data syntax tokens</p>
-<p>This</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.addComment">
-<span class="sig-name descname"><span class="pre">addComment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.addComment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.addComment" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.addCoords">
-<span class="sig-name descname"><span class="pre">addCoords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.addCoords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.addCoords" title="Permalink to this definition">¶</a></dt>
-<dd><p>the coords constructor</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.addDependencies">
-<span class="sig-name descname"><span class="pre">addDependencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.addDependencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.addDependencies" title="Permalink to this definition">¶</a></dt>
-<dd><p>handle embedded declarations</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.addEdge">
-<span class="sig-name descname"><span class="pre">addEdge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pd_lines</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.addEdge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.addEdge" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.addGOPArray">
-<span class="sig-name descname"><span class="pre">addGOPArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.addGOPArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.addGOPArray" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.addGraph">
-<span class="sig-name descname"><span class="pre">addGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.addGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.addGraph" title="Permalink to this definition">¶</a></dt>
-<dd><p>The ye-olde array ancestor</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.addMsg">
-<span class="sig-name descname"><span class="pre">addMsg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.addMsg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.addMsg" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.addNativeGui">
-<span class="sig-name descname"><span class="pre">addNativeGui</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">className</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.addNativeGui"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.addNativeGui" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.addObj">
-<span class="sig-name descname"><span class="pre">addObj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.addObj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.addObj" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a Pd object from pure data syntax tokens</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.addRoot">
-<span class="sig-name descname"><span class="pre">addRoot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pd_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.addRoot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.addRoot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a root canvas object from pure data, json, or an empty canvas</p>
-<p>Called by the parse() method as well as the PdPyParser class</p>
-<p>The root canvas object</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.addScalar">
-<span class="sig-name descname"><span class="pre">addScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pd_lines</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.addScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.addScalar" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.addStruct">
-<span class="sig-name descname"><span class="pre">addStruct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pd_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xml</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.addStruct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.addStruct" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.arrangement">
-<span class="sig-name descname"><span class="pre">arrangement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">choice</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.arrangement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.arrangement" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the arrange function from :module;`util`</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>choice</strong> (<em>the choices are numbered starting at 0</em>) – </p></li>
-<li><p><strong>choices</strong> (<em>if negative</em><em> or </em><em>not one of the available</em>) – </p></li>
-</ul>
-</dd>
-</dl>
-<p>:param :
-:param it defaults to <code class="docutils literal notranslate"><span class="pre">arrange1b</span></code>:</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.createArray">
-<span class="sig-name descname"><span class="pre">createArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.createArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.createArray" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a GOP Array construction on the canvas</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.getTemplate">
-<span class="sig-name descname"><span class="pre">getTemplate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.getTemplate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.getTemplate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.parse">
-<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argvecs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.parse" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse a list of Pd argument vectors (1) into this instance’s scope</p>
-<p>This method populates the current class with appropriate calls to
-individual classes refered to by parsing the argument vector <cite>argv</cite>.</p>
-<p>(1) A pure data argument vector is a list containing a tokenized version
-of the pure data file line (binbuf), starting with ‘#’ and ending with ‘;’.
-The tokens are split by spaces, ignoring escaped chars. The special char
-‘,’ is handled before calling this method.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.restore">
-<span class="sig-name descname"><span class="pre">restore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.restore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.restore" title="Permalink to this definition">¶</a></dt>
-<dd><p>Restore constructor</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdpy.classes.pdpy.PdPy.write">
-<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/pdpy.html#PdPy.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.pdpy.PdPy.write" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write out the pd file to disk</p>
-</dd></dl>
-
-</dd></dl>
-
-<span class="target" id="module-pdpy.classes.canvas"></span><p>Canvas Class Definition</p>
+  <section id="module-pdpy.classes.canvas">
+<span id="patching"></span><h1>Patching<a class="headerlink" href="#module-pdpy.classes.canvas" title="Permalink to this heading">¶</a></h1>
+<p>Canvas Class Definition</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pdpy.classes.canvas.Canvas">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdpy.classes.canvas.</span></span><span class="sig-name descname"><span class="pre">Canvas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/canvas.html#Canvas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.canvas.Canvas" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdpy.classes.canvas.</span></span><span class="sig-name descname"><span class="pre">Canvas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/canvas.html#Canvas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.canvas.Canvas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="base.html#pdpy.classes.canvasbase.CanvasBase" title="pdpy.classes.canvasbase.CanvasBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">CanvasBase</span></code></a>, <a class="reference internal" href="base.html#pdpy.classes.base.Base" title="pdpy.classes.base.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code></a></p>
 <p>A Pure Data ‘canvas’ or ‘subpatch’ represented as a <cite>pdpy</cite> object</p>
 <p>This class holds the pure data subpach/canvas properties
@@ -342,10 +126,33 @@ from the pure data file representation: <cite>#N canvas 0 22 450 300 12;</cite><
 <cite>font</cite> (<cite>int</cite>) window font size (12)
 <cite>__pdpy__</cite> (<cite>str</cite>) PdPy className (<cite>self.__class__.__name__</cite>)</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="pdpy.classes.canvas.Canvas.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/canvas.html#Canvas.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.canvas.Canvas.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add (append) a Node to this canvas <cite>nodes</cite></p>
+<p>This method creates and/or appends a ‘node’ to an internal array <cite>nodes</cite>.
+Each node is a Pure Data object that is neither a comment nor a connection</p>
+<p>The position (index) of the most recently added node</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pdpy.classes.canvas.Canvas.addpos">
+<span class="sig-name descname"><span class="pre">addpos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/canvas.html#Canvas.addpos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.canvas.Canvas.addpos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pdpy.classes.canvas.Canvas.comment">
 <span class="sig-name descname"><span class="pre">comment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/canvas.html#Canvas.comment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.canvas.Canvas.comment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append a pure data comment</p>
 <p>This method creates and/or appends a pure data comment.</p>
+<p>None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pdpy.classes.canvas.Canvas.edge">
+<span class="sig-name descname"><span class="pre">edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/canvas.html#Canvas.edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.canvas.Canvas.edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a pure data connection (edge)</p>
+<p>This method creates and/or appends a pure data connection as an <cite>Edge</cite>.
+See <cite>Edge</cite> to see how connections are handled.</p>
 <p>None</p>
 </dd></dl>
 
@@ -360,8 +167,14 @@ from the pure data file representation: <cite>#N canvas 0 22 450 300 12;</cite><
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pdpy.classes.canvas.Canvas.grow">
+<span class="sig-name descname"><span class="pre">grow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/canvas.html#Canvas.grow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.canvas.Canvas.grow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increments the canvas object index by 1</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pdpy.classes.canvas.Canvas.update_cursor">
-<span class="sig-name descname"><span class="pre">update_cursor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/canvas.html#Canvas.update_cursor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.canvas.Canvas.update_cursor" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">update_cursor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pdpy/classes/canvas.html#Canvas.update_cursor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pdpy.classes.canvas.Canvas.update_cursor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fill objects from top to bottom until we reach bottom
 (used to be get_position)</p>
 </dd></dl>

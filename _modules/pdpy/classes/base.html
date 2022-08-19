@@ -85,10 +85,7 @@
 <span class="c1"># This file is part of the pdpy project</span>
 <span class="c1"># Copyright (C) 2021 Fede Camara Halac</span>
 <span class="c1"># **************************************************************************** #</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Base</span>
-<span class="sd">====</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot; Base Class &quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">dumps</span> <span class="k">as</span> <span class="n">json_dumps</span>
 <span class="kn">from</span> <span class="nn">..util.utils</span> <span class="kn">import</span> <span class="n">log</span>
@@ -100,37 +97,22 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Base&#39;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Base"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.base.Base">[docs]</a><span class="k">class</span> <span class="nc">Base</span><span class="p">(</span><span class="n">XmlBuilder</span><span class="p">,</span> <span class="n">XmlTagConvert</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot; The base class for all pd objects in pdpy.</span>
+  <span class="sd">&quot;&quot;&quot; Pd Base class</span>
+<span class="sd">  </span>
+<span class="sd">  Description</span>
+<span class="sd">  -----------</span>
+<span class="sd">  The base class for all pd objects in pdpy.</span>
 
-<span class="sd">  Parameters</span>
-<span class="sd">  ----------</span>
-<span class="sd">  </span>
-<span class="sd">  patchname : :class:`str` or ``None``</span>
-<span class="sd">    Name of the Pd patch file (default: ``None``)</span>
-<span class="sd">  </span>
-<span class="sd">  pdtype : :class:`str` or ``None``</span>
-<span class="sd">    Type of the Pd object: ``X``, ``N``, or ``A`` (default: ``X``)</span>
-<span class="sd">  </span>
-<span class="sd">  cls : :class:`str`  or ``None``</span>
-<span class="sd">    Class of the Pd object, eg.: ``msg``, ``text``, ... (default: ``obj``)</span>
-<span class="sd">  </span>
-<span class="sd">  json : ``dict`` or ``None``</span>
-<span class="sd">    A json dictionary of key/value pairs to populate the object.</span>
-
-<span class="sd">  xml : ``xml.etree.ElementTree.Element`` or ``None``</span>
-<span class="sd">    An Xml Element with the appropriate element structure.</span>
-<span class="sd">  </span>
-<span class="sd">  default : :class:`pdpy.classes.default.Default` or ``None``</span>
-<span class="sd">    A class containing a template for default values.</span>
-
-
-<span class="sd">  .. document private functions</span>
-<span class="sd">  </span>
-<span class="sd">  .. automethod:: __pd__</span>
-<span class="sd">  .. automethod:: __xml_load__</span>
-<span class="sd">  .. automethod:: __json__</span>
-<span class="sd">    </span>
-<span class="sd">  </span>
+<span class="sd">  Paramaeters</span>
+<span class="sd">  -----------</span>
+<span class="sd">  patchname : `str` (optional)</span>
+<span class="sd">    Name of the Pd patch file (default: `None`)</span>
+<span class="sd">  pdtype : `str` (optional)</span>
+<span class="sd">    Type of the Pd object (one of X, N, or A). Defaults to &#39;X&#39;: `#X ...`</span>
+<span class="sd">  cls : `str` (optional) </span>
+<span class="sd">    Class of the Pd object (eg. msg, text, etc.) Defaults to `obj`. `#X obj ...`</span>
+<span class="sd">  json : `dict` (optional)</span>
+<span class="sd">    A dictionary of key/value pairs to populate the object. </span>
 
 <span class="sd">  &quot;&quot;&quot;</span>
   
@@ -211,7 +193,7 @@
     <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
       <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-<div class="viewcode-block" id="Base.__json__"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.base.Base.__json__">[docs]</a>  <span class="k">def</span> <span class="nf">__json__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__json__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Return a JSON representation of the instance&#39;s scope as a string &quot;&quot;&quot;</span>
 
     <span class="c1"># inner function to filter out variables that are</span>
@@ -229,7 +211,7 @@
       <span class="n">default</span>   <span class="o">=</span> <span class="n">__filter__</span><span class="p">,</span>
       <span class="n">sort_keys</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
       <span class="n">indent</span>    <span class="o">=</span> <span class="n">indent</span>
-    <span class="p">)</span></div>
+    <span class="p">)</span>
   
   <span class="k">def</span> <span class="nf">__dumps__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="n">log</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">79</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__json__</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
@@ -272,20 +254,15 @@
     <span class="k">except</span><span class="p">:</span>
       <span class="k">return</span> <span class="kc">False</span>
 
-  <span class="k">def</span> <span class="nf">__get_obj_size__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__get_obj_size__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     
-    <span class="c1"># print(self.__json__())</span>
-    <span class="n">font_size</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">font</span>
+    <span class="n">font_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent__</span><span class="p">()</span><span class="o">.</span><span class="n">font</span>
 
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;size&#39;</span><span class="p">):</span>
-      <span class="c1"># print(&quot;Size&quot;, self.size.__pd__())</span>
-      <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">):</span>
+      <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">height</span>
       <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">):</span>
-          <span class="k">return</span> <span class="n">font_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">height</span>
-        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">):</span>
-          <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">font_size</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">width</span>
     
     <span class="n">text_h</span> <span class="o">=</span> <span class="n">font_size</span> <span class="o">*</span> <span class="mi">2</span>
     <span class="n">text_w</span> <span class="o">=</span> <span class="mi">0</span>
@@ -313,7 +290,7 @@
 
     <span class="k">if</span> <span class="n">mod_80</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span> <span class="n">text_h</span> <span class="o">*=</span> <span class="n">mod_80</span>
 
-    <span class="k">return</span> <span class="p">(</span><span class="n">text_w</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">font_size</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">text_h</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">text_w</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">font_size</span><span class="p">,</span> <span class="n">text_h</span>
 
 
   <span class="k">def</span> <span class="nf">__populate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">json</span><span class="p">):</span>
@@ -363,70 +340,58 @@
     <span class="n">arg</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">$&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">arg</span>
 
-  <span class="k">def</span> <span class="nf">__closeline__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pdtype</span><span class="p">,</span> <span class="n">pdcls</span><span class="p">,</span> <span class="n">pdargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Closes a Pd file line</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pdtype</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pdcls</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">__pd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Returns a the pd line for this object</span>
+<span class="sd">    </span>
+<span class="sd">    Description</span>
+<span class="sd">    -----------</span>
+<span class="sd">    Called by all derived classes to return a Pd line for this object.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    args : `list` of `str` or `str` or `None`</span>
+<span class="sd">      The arguments to the pd line.</span>
+<span class="sd">    </span>
+<span class="sd">    If args is present, the pd line will end with `;\r\n` with the arguments:</span>
+<span class="sd">      If args is a list of strings, each element is appended to the pd line.</span>
+<span class="sd">        `#N canvas 0 22 340 520 12;`</span>
+<span class="sd">      If args is a string, it is appended to the pd line: </span>
+<span class="sd">        `#X obj 10 30 print;`</span>
+<span class="sd">    If args is None, the pd line is returned without arguments: </span>
+<span class="sd">      `#X connect`</span>
 
-    <span class="k">if</span> <span class="n">pdargs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-      <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pdargs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pdargs</span><span class="p">)</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -----------</span>
+<span class="sd">    `str` : the pd line for this object built with `__type__` and `__cls__`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__type__</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cls__</span><span class="p">)</span>
+    <span class="c1"># log(1, &quot;Base.__pd__()&quot;, repr(s))</span>
+
+    <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
       <span class="k">else</span><span class="p">:</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pdargs</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__end__</span>
     
     <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;  &#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">s</span>
-  
-<div class="viewcode-block" id="Base.__pd__"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.base.Base.__pd__">[docs]</a>  <span class="k">def</span> <span class="nf">__pd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Returns a the pd line for this object</span>
-<span class="sd">    </span>
-<span class="sd">    Called by all derived classes to return a Pd line for this object.</span>
-<span class="sd">    If ``args`` is present the pd line will end with ``;\\r\\n``, and:</span>
-
-<span class="sd">    * If ``args`` is a list of strings, each element is appended to the pd line::</span>
-<span class="sd">    </span>
-<span class="sd">        #N canvas &gt;&gt;&gt; 0 22 340 520 12 &gt;&gt;&gt; ; &lt;&lt;&lt;</span>
-<span class="sd">    </span>
-<span class="sd">    * If ``args`` is a string, it is appended to the pd line::</span>
-<span class="sd">      </span>
-<span class="sd">        #X obj &gt;&gt;&gt; 10 30 print &gt;&gt;&gt; ; &lt;&lt;&lt;</span>
-<span class="sd">    </span>
-<span class="sd">    * If ``args`` is ``None``, the pd line is returned without arguments::</span>
-<span class="sd">      </span>
-<span class="sd">        #X connect &gt;&gt;&gt; &lt;&lt;&lt;</span>
-
-<span class="sd">    </span>
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    args : ``list`` of :class:`str` or :class:`str` or ``None``</span>
-<span class="sd">      The arguments to the pd line.</span>
-
-<span class="sd">    </span>
-<span class="sd">    Return</span>
-<span class="sd">    ------</span>
-<span class="sd">    :class:`str`</span>
-<span class="sd">      the pd line for this object built with ``__type__`` and ``__cls__``</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    
-    <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__closeline__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__type__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cls__</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-    <span class="c1"># log(1, &quot;Base.__pd__()&quot;, repr(s))</span>
 
     <span class="c1"># split line at 80 chars: </span>
     <span class="c1"># insert \r\n on the last space char</span>
     <span class="c1"># s = &#39;\n&#39;.join(s[i:i+79] for i in range(0, len(s), 79))</span>
-    <span class="k">return</span> <span class="n">s</span></div>
+    <span class="k">return</span> <span class="n">s</span>
 
-<div class="viewcode-block" id="Base.__xml_load__"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.base.Base.__xml_load__">[docs]</a>  <span class="k">def</span> <span class="nf">__xml_load__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_tree</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__xml_load__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_tree</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Parse an XML tree into a PdPy object </span>
 <span class="sd">    </span>
+<span class="sd">    Description</span>
+<span class="sd">    -----------</span>
 <span class="sd">    Called if loading a PdPy object from an XML file.</span>
 <span class="sd">    </span>
-<span class="sd">    .. note:: </span>
-<span class="sd">      This method assumes it belongs to a PdPy class, because:</span>
-<span class="sd">      :class:`pdpy.classes.pdpy.PdPy` bases :class:`pdpy.classes.base.Base`</span>
+<span class="sd">    NOTE: This method assumes it belongs to a PdPy class, because:</span>
+<span class="sd">    `class PdPy(CanvasBase, Base):` &lt;-- PdPy is derived from Base</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># get the xml root element</span>
@@ -479,34 +444,15 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">addRoot</span><span class="p">(</span><span class="n">json</span><span class="o">=</span><span class="n">root_dict</span><span class="p">)</span> <span class="c1"># belongs to PdPy class</span>
 
     <span class="c1"># spawn the __parent__ json tree</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__jsontree__</span><span class="p">()</span> <span class="c1"># belongs to PdPy class</span></div>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__jsontree__</span><span class="p">()</span> <span class="c1"># belongs to PdPy class</span>
 
   <span class="k">def</span> <span class="nf">__sane_name__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
       <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="s2">&quot;$&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;`&quot;</span><span class="p">,</span> <span class="s2">&quot;%&quot;</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">):</span>
           <span class="k">raise</span> <span class="n">MalformedName</span><span class="p">(</span><span class="s2">&quot;Special chars in name were detected.&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">name</span>
+    <span class="k">return</span> <span class="n">name</span></div>
 
-<div class="viewcode-block" id="Base.getid"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.base.Base.getid">[docs]</a>  <span class="k">def</span> <span class="nf">getid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Returns the id attribute or 0 if missing &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span></div>
-
-<div class="viewcode-block" id="Base.getname"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.base.Base.getname">[docs]</a>  <span class="k">def</span> <span class="nf">getname</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Returns the className or PdPy class of the object if missing &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Base.addpos"><a class="viewcode-back" href="../../../classes/base.html#pdpy.classes.base.Base.addpos">[docs]</a>  <span class="k">def</span> <span class="nf">addpos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Adds or updates the position :class:`pdpy.classes.point.Point` &quot;&quot;&quot;</span>
-    <span class="c1"># print(&quot;Adding position for:&quot;, self.getname(), x, y)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;position&#39;</span><span class="p">):</span>
-      <span class="kn">from</span> <span class="nn">.point</span> <span class="kn">import</span> <span class="n">Point</span>
-      <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-      <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-      <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;position&#39;</span><span class="p">,</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">set_x</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">set_y</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">))</span></div></div>
 </pre></div>
 
            </div>

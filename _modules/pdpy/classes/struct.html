@@ -143,9 +143,8 @@
           <span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pd_lines</span><span class="p">)</span>
           <span class="bp">self</span><span class="o">.</span><span class="n">__dumps__</span><span class="p">()</span>
         <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span>
-    <span class="k">else</span><span class="p">:</span>
-      <span class="k">pass</span>
-      <span class="c1"># raise ArgumentException(&quot;Struct: Incorrect arguments given&quot;)</span>
+    <span class="k">else</span><span class="p">:</span> 
+      <span class="k">raise</span> <span class="n">ArgumentException</span><span class="p">(</span><span class="s2">&quot;Struct: Incorrect arguments given&quot;</span><span class="p">)</span>
   
 <div class="viewcode-block" id="Struct.addFloat"><a class="viewcode-back" href="../../../classes/data.html#pdpy.classes.struct.Struct.addFloat">[docs]</a>  <span class="k">def</span> <span class="nf">addFloat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pd_name</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">):</span>
@@ -243,9 +242,6 @@
   <span class="k">def</span> <span class="nf">__pd__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Returns the struct instruction for the pd file &quot;&quot;&quot;</span>
     
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">):</span>
-      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__closeline__</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;obj&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">__pd__</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cls__</span><span class="p">)</span>
-
     <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
     <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;order&#39;</span><span class="p">,</span> <span class="p">[]):</span>
